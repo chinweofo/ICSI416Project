@@ -5,17 +5,14 @@ Purpose: Socket programming for ICSI416.
 Allows the user to upload, download and quit the program.
 Need to create two files to bounce back and forth: clientTCP.py, serverTCP.py
 All exchanges (upload or download) will be initiated by the client.
+
+Utilized this website for explanations: https://realpython.com/python-sockets/
 """
 
 
 import socket
 import socketserver
 import sys
-
-
-fileName = ""
-
-
 
 
 #Helper methods
@@ -52,6 +49,27 @@ def commandLoop():
         else:
             print("Unknown command. Try again.")
 
+def fileToBytes(fileName):
+    """
+    Converts a file's content into a bytes object.
+
+    Args:
+        filepath (str): The path to the file.
+
+    Returns:
+        bytes: The content of the file as a bytes object.
+    """
+    try:
+        with open(fileName, 'rb') as f:
+            fileBytes = f.read()
+        return fileBytes
+    except FileNotFoundError:
+        print(f"Error: The file '{fileName}' was not found.")
+        return None
+    except IOError as e:
+        print(f"Error reading file '{fileName}': {e}")
+        return None
+
 
 
 #Implement the following: 
@@ -65,7 +83,6 @@ connection.
 Example execution with prompts on the client:
 put <file>
 File successfully uploaded.
-"""
 
 def runPut(fileName):
     #upload_url = 'http://127.0.0.1:5000/upload/my_document.pdf'
@@ -78,6 +95,34 @@ def runPut(fileName):
 
     if .status_code == 200:
         print("File successfully uploaded")
+"""
+def runPut(fileName):
+    #create the socket
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #SOCK_STREAM for TCP
+    if(sock < 0):
+        print("[-] Socket Error\n")
+        exit(1)
+    print("[+] TCP Server Socket Created.\n")
+
+    #connect to the server
+    sock.connect((ipAddress, int(serverPort)))
+    print("[+] Connected to Server")
+
+    #upload to the server
+    #convert the file to bytes first to send through the socket
+    #Tells the server what the client wants to upload instead of just uploading it
+    command = f"put {fileName}"
+    socket.send(command, fileName.encode())
+
+    #wait for an acknowledgement from the server and convert that from bytes
+    acknowledgment = socket.recv(1024).decode() 
+
+    
+    if acknowledgment != "Ack 0":
+            print("[-] Server Error")
+            exit(1)
+
+
     
 
 
@@ -120,7 +165,7 @@ specify several command line arguments, as detailed below:
 
 
 def main():
-    global serverPort, ipAddress
+    global serverPort, ipAddress, fileName
     
     print("Input the Server port and ip address: ")
     #print(sys.argv)
