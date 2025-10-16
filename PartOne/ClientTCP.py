@@ -6,16 +6,53 @@ Allows the user to upload, download and quit the program.
 Need to create two files to bounce back and forth: clientTCP.py, serverTCP.py
 All exchanges (upload or download) will be initiated by the client.
 """
-#pip install requests # type: ignore
+
 
 import socket
 import socketserver
 import sys
-import requests 
+
 
 fileName = ""
-serverPort = ""
-ipAddress = ""
+
+
+
+
+#Helper methods
+
+def commandLoop():
+    while True:
+        commandLine = input("Enter HTTP request (put/get/quit): ").strip()
+        if not commandLine:
+            continue  
+
+        parts = commandLine.split() #this will take the command line argument and split it into the command and the file name and put it into a list
+        command = parts[0].upper()
+
+        #Handles the PUT command
+        if command == "PUT":
+            if len(parts) != 2:
+                print("Incorrect input. Should be: put <filename>") #will restart the command line question
+                continue
+            fileName = parts[1]
+            runPut(fileName)
+
+        #Handles the GET command
+        if command == "GET":
+            if len(parts) != 2:
+                print("Incorrect input. Should be: get <filename>") #will restart the command line question
+                continue
+            fileName = parts[1]
+            runGet(fileName)
+
+        #Handles the QUIT command
+        elif command == "QUIT":
+            runQuit()
+
+        else:
+            print("Unknown command. Try again.")
+
+
 
 #Implement the following: 
 
@@ -39,7 +76,7 @@ def runPut(fileName):
 
     r = requests.put(upload, data=file_content)
 
-    if requests.status_code == 200:
+    if .status_code == 200:
         print("File successfully uploaded")
     
 
@@ -59,11 +96,15 @@ def Download(command):
     
     print("File successfully uploaded")
 """
-
+def runGet():
+    pass
 
 
 """Quit: Close the program per user request."""
-#def Quit():
+def runQuit():
+    print("Closing client connection to server...")
+    #then close the client connection to server
+    
 
 
 
@@ -79,19 +120,19 @@ specify several command line arguments, as detailed below:
 
 
 def main():
+    global serverPort, ipAddress
+    
     print("Input the Server port and ip address: ")
-    print(sys.argv)
-    serverPort = sys.argv[0]
-    ipAddress = sys.argv[1] 
+    #print(sys.argv)
 
+    if len(sys.argv) != 3:
+        print("Incorrect input. Should be: python clientTCP.py <ServerPort> <ServerIP>")
+        sys.exit(1)
 
-    print("Input HTTP command and file: ")
-    print(sys.argv)
-    currentCommand = sys.argv[0]
-    fileName = sys.argv[1]
-    #need the parameters into variables then use those variables as parameters in runPut()
-    if sys.argv[0] == "put" or sys.argv[0] == "PUT":
-        runPut(fileName)
+    serverPort = sys.argv[1]
+    ipAddress = sys.argv[2] 
+
+    commandLoop()
 
     
 
