@@ -7,6 +7,7 @@ It supports file upload and download operations initiated by the client.
 
 Usage:
     python serverTCP.py <port>
+        (IE: python serverTCP.py 12345)
 
 Expected client commands:
     put <filename>     # Upload a file to the server
