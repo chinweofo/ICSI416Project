@@ -10,7 +10,8 @@ All communication is done over TCP sockets.
 
 Usage:
     python clientTCP.py <port> <IP Address>
-
+        (python clientTCP.py 12345 127.0.0.1
+        
 Commands:
     - put <filename> : Uploads a file to the server.
     - get <filename> : Downloads a file from the server.
