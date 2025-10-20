@@ -1,13 +1,15 @@
 """
 Authors: Chinwe Ofonagoro, Vincent Jiang  
-Date: 10/18/2025  
-Course: ICSI416  
+Date: 10/18/2025
 Purpose: TCP Socket Programming Project (Client Side)
 
 This script acts as a client for uploading and downloading files
 to/from a server using basic file transfer commands (`put`, `get`, and `quit`).
 
 All communication is done over TCP sockets.
+
+Usage:
+    python clientTCP.py <port> <IP Address>
 
 Commands:
     - put <filename> : Uploads a file to the server.
