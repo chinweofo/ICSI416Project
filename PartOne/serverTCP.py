@@ -1,6 +1,6 @@
 """
 Authors: Chinwe Ofonagoro, Vincent Jiang
-Date: [Insert Date]
+Date: 10/18/2025
 Purpose: Socket programming for ICSI416.
 This script implements the server side of a TCP-based file transfer application.
 It supports file upload and download operations initiated by the client.
